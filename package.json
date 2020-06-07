@@ -1,6 +1,6 @@
 {
-  "name": "amocrm-js",
-  "version": "1.0.18",
+  "name": "amocrm-js-rn",
+  "version": "1.0.19",
   "description": "JS Library for AmoCRM",
   "main": "dist/AmoCRM.js",
   "directories": {
@@ -12,19 +12,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/UsefulWeb/AmoCRM.git"
+    "url": "git+https://github.com/DiyarS/AmoCRM.git"
   },
   "keywords": [
     "crm",
     "amocrm",
     "amo"
   ],
-  "author": "Vladimir Yazykov",
+  "author": "Akhmediyar Sailaubekov",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/UsefulWeb/AmoCRM/issues"
+    "url": "https://github.com/DiyarS/AmoCRM/issues"
   },
-  "homepage": "https://github.com/UsefulWeb/AmoCRM#readme",
+  "homepage": "https://github.com/DiyarS/AmoCRM#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
@@ -34,6 +34,7 @@
     "jasmine": "^3.3.0"
   },
   "dependencies": {
+    "axios": "^0.19.0",
     "promise-queue": "^2.2.5",
     "qs": "^6.5.2",
     "xml2js": "^0.4.19"
