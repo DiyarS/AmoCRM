@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -6,13 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _http = require('http');
+var _axios = require("axios");
 
-var _http2 = _interopRequireDefault(_http);
-
-var _https = require('https');
-
-var _https2 = _interopRequireDefault(_https);
+var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26,43 +22,43 @@ var PrivateRequest = function () {
   }
 
   _createClass(PrivateRequest, [{
-    key: 'send',
+    key: "send",
     value: function send() {
-      var _this = this;
-
       var _options = this._options,
           hostname = _options.hostname,
           path = _options.path,
           _options$method = _options.method,
-          method = _options$method === undefined ? 'GET' : _options$method,
+          method = _options$method === undefined ? "GET" : _options$method,
           _options$headers = _options.headers,
           headers = _options$headers === undefined ? {} : _options$headers,
           _options$data = _options.data,
-          data = _options$data === undefined ? '' : _options$data,
+          data = _options$data === undefined ? "" : _options$data,
           form = _options.form,
           _options$secure = _options.secure,
-          secure = _options$secure === undefined ? false : _options$secure,
-          driver = secure ? _https2.default : _http2.default;
+          secure = _options$secure === undefined ? false : _options$secure;
+
 
       return new Promise(function (resolve, reject) {
-        var request = driver.request({
-          hostname: hostname,
-          path: path,
+        var url = "" + hostname + path;
+
+        (0, _axios2.default)({
           method: method,
-          headers: headers
-        }, _this.onResponse(resolve, reject));
+          headers: headers,
+          url: url,
+          data: data
+        }).then(function (response) {
+          return resolve(response);
+        }).catch(function (error) {
+          return reject(error);
+        });
 
         if (form) {
           form.pipe(request);
-        } else if (method !== 'GET') {
-          request.write(data);
         }
-        request.on('error', _this.onError(reject));
-        request.end();
       });
     }
   }, {
-    key: 'onError',
+    key: "onError",
     value: function onError(callback) {
       return function (_ref) {
         var error = _ref.error;
@@ -70,11 +66,12 @@ var PrivateRequest = function () {
       };
     }
   }, {
-    key: 'onResponse',
+    key: "onResponse",
     value: function onResponse(callback) {
-      var rawData = '';
+      var rawData = "";
       var onResponseData = function onResponseData(chunk) {
-        rawData += chunk;console.log(chunk);
+        rawData += chunk;
+        console.log(chunk);
       },
           onRequestEnd = function onRequestEnd(response) {
         return function () {
@@ -83,8 +80,8 @@ var PrivateRequest = function () {
       };
 
       return function (response) {
-        response.on('data', onResponseData);
-        response.on('end', onRequestEnd(response));
+        response.on("data", onResponseData);
+        response.on("end", onRequestEnd(response));
       };
     }
   }]);
