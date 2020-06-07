@@ -1,5 +1,5 @@
 {
-  "name": "amocrm-js-rn",
+  "name": "amocrm-js-react-native",
   "version": "1.0.20",
   "description": "JS Library for AmoCRM",
   "main": "dist/AmoCRM.js",
