@@ -1,6 +1,4 @@
 "use strict";
-import http from "http";
-import https from "https";
 import axios from "axios";
 
 class HTTPRequest {
@@ -17,8 +15,8 @@ class HTTPRequest {
         data = "",
         secure = false,
       } = this._options,
-      driver = secure ? https : http,
       isGET = method === "GET";
+
     return new Promise((resolve, reject) => {
       const url = `${hostname}${path}`;
 

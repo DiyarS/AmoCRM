@@ -1,6 +1,5 @@
 'use strict';
-import http from 'http';
-import https from 'https';
+import axios from "axios";
 
 class PrivateRequest {
   constructor( options ) {
@@ -17,23 +16,20 @@ class PrivateRequest {
         form,
         secure = false
       } = this._options,
-      driver = secure ? https : http;
+  
     return new Promise(( resolve, reject ) => {
-      const request = driver.request({
-        hostname,
-        path,
+      const url = `${hostname}${path}`;
+
+      axios({
         method,
-        headers
-      }, this.onResponse( resolve, reject ));
+        headers,
+        url,
+        data,
+      }).then((response) => resolve(response)).catch((error) => reject(error));
 
       if ( form ) {
         form.pipe( request );
       }
-      else if ( method !== 'GET' ) {
-        request.write( data );
-      }
-      request.on( 'error', this.onError( reject ));
-      request.end();
     });
   }
 
