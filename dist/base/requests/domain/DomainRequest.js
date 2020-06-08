@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -6,23 +6,23 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _promiseQueue = require('promise-queue');
+var _promiseQueue = require("promise-queue");
 
 var _promiseQueue2 = _interopRequireDefault(_promiseQueue);
 
-var _qs = require('qs');
+var _qs = require("qs");
 
 var _qs2 = _interopRequireDefault(_qs);
 
-var _HTTPRequest = require('../common/HTTPRequest');
+var _HTTPRequest = require("../common/HTTPRequest");
 
 var _HTTPRequest2 = _interopRequireDefault(_HTTPRequest);
 
-var _DomainResponseHandler = require('../../responseHandlers/DomainResponseHandler');
+var _DomainResponseHandler = require("../../responseHandlers/DomainResponseHandler");
 
 var _DomainResponseHandler2 = _interopRequireDefault(_DomainResponseHandler);
 
-var _EventResource2 = require('../../EventResource');
+var _EventResource2 = require("../../EventResource");
 
 var _EventResource3 = _interopRequireDefault(_EventResource2);
 
@@ -41,43 +41,43 @@ var DomainRequest = function (_EventResource) {
     _classCallCheck(this, DomainRequest);
 
     if (!domain) {
-      throw new Error('Portal domain must be set!');
+      throw new Error("Portal domain must be set!");
     }
 
     var _this = _possibleConstructorReturn(this, (DomainRequest.__proto__ || Object.getPrototypeOf(DomainRequest)).call(this));
 
     _this._queue = new _promiseQueue2.default(1);
     _this._cookies = [];
-    _this._hostname = domain.includes('.') ? domain : domain + '.amocrm.ru';
+    _this._hostname = domain.includes(".") ? domain : domain + ".amocrm.ru";
     return _this;
   }
 
   _createClass(DomainRequest, [{
-    key: 'clear',
+    key: "clear",
     value: function clear() {
       this._cookies = [];
     }
   }, {
-    key: 'post',
+    key: "post",
     value: function post(url) {
       var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-      return this.request(url, data, 'POST', options);
+      return this.request(url, data, "POST", options);
     }
   }, {
-    key: 'get',
+    key: "get",
     value: function get(url) {
       var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-      return this.request(url, data, 'GET', options);
+      return this.request(url, data, "GET", options);
     }
   }, {
-    key: 'request',
+    key: "request",
     value: function request(url) {
       var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'GET';
+      var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "GET";
       var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
       var encodedData = this.encodeData(url, data, method, options),
@@ -86,7 +86,7 @@ var DomainRequest = function (_EventResource) {
       return this.addRequestToQueue(request, options.response);
     }
   }, {
-    key: 'addRequestToQueue',
+    key: "addRequestToQueue",
     value: function addRequestToQueue(request, options) {
       var _this2 = this;
 
@@ -97,88 +97,103 @@ var DomainRequest = function (_EventResource) {
       });
     }
   }, {
-    key: 'encodeData',
+    key: "encodeData",
     value: function encodeData(url) {
       var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'GET';
+      var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "GET";
       var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
-      var isGET = method === 'GET';
+      var isGET = method === "GET";
 
       return isGET ? _qs2.default.stringify(data) : JSON.stringify(data);
     }
   }, {
-    key: 'getDefaultHeaders',
+    key: "convertStringToByteArray",
+    value: function convertStringToByteArray(str) {
+      String.prototype.encodeHex = function () {
+        var bytes = [];
+        for (var i = 0; i < this.length; ++i) {
+          bytes.push(this.charCodeAt(i));
+        }
+        return bytes;
+      };
+
+      var byteArray = str.encodeHex();
+      return byteArray;
+    }
+  }, {
+    key: "getDefaultHeaders",
     value: function getDefaultHeaders(headers) {
       return Object.assign({}, headers, {
-        'Cookie': this._cookies.join(),
-        'User-Agent': this.constructor.DEFAULT_USER_AGENT
+        Cookie: this._cookies.join(),
+        "User-Agent": this.constructor.DEFAULT_USER_AGENT
       });
     }
   }, {
-    key: 'getRequestHeaders',
+    key: "getRequestHeaders",
     value: function getRequestHeaders(url) {
-      var encodedData = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-      var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'GET';
+      var encodedData = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+      var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "GET";
       var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
-      var isGET = method === 'GET',
+      var isGET = method === "GET",
           headers = this.getDefaultHeaders(options.headers);
 
       if (!isGET && encodedData) {
-        headers['Content-Length'] = Buffer.byteLength(encodedData);
+        console.log("DATA: ", endcodedData);
+        headers["Content-Length"] = this.convertStringToByteArray(encodedData).length;
       }
       return headers;
     }
   }, {
-    key: 'setCookies',
+    key: "setCookies",
     value: function setCookies(cookies) {
       this._cookies = cookies;
       var expiresCookie = cookies.find(function (cookie) {
-        return cookie.includes('expires=');
+        return cookie.includes("expires=");
       });
 
       if (!expiresCookie) {
         delete this._expires;
-        this.triggerEvent('expires', this);
+        this.triggerEvent("expires", this);
         return;
       }
 
-      var expires = expiresCookie.split('; ').find(function (cookie) {
-        return cookie.startsWith('expires=');
+      var expires = expiresCookie.split("; ").find(function (cookie) {
+        return cookie.startsWith("expires=");
       });
 
       if (!expires) {
         delete this._expires;
-        this.triggerEvent('expires', this);
+        this.triggerEvent("expires", this);
         return;
       }
 
-      this._expires = new Date(expires.replace('expires=', ''));
+      this._expires = new Date(expires.replace("expires=", ""));
     }
   }, {
-    key: 'handleResponse',
+    key: "handleResponse",
     value: function handleResponse(_ref) {
       var rawData = _ref.rawData,
           response = _ref.response;
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var responseHandlerClass = this.constructor.responseHandlerClass;
 
-      if (options.saveCookies && response.headers['set-cookie']) {
-        this.setCookies(response.headers['set-cookie']);
+      if (options.saveCookies && response.headers["set-cookie"]) {
+        this.setCookies(response.headers["set-cookie"]);
       }
       var handler = new responseHandlerClass(rawData);
       return handler.toJSON(options);
     }
   }, {
-    key: 'createRequest',
+    key: "createRequest",
     value: function createRequest(url) {
-      var encodedData = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-      var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'GET';
+      var encodedData = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+      var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "GET";
       var headers = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
-      var isGET = method === 'GET',
-          path = isGET ? url + '?' + encodedData : url;
+      var isGET = method === "GET",
+          path = isGET ? url + "?" + encodedData : url;
 
       return new _HTTPRequest2.default({
         path: path,
@@ -190,7 +205,7 @@ var DomainRequest = function (_EventResource) {
       });
     }
   }, {
-    key: 'expires',
+    key: "expires",
     get: function get() {
       return this._expires;
     }
@@ -200,5 +215,5 @@ var DomainRequest = function (_EventResource) {
 }(_EventResource3.default);
 
 DomainRequest.responseHandlerClass = _DomainResponseHandler2.default;
-DomainRequest.DEFAULT_USER_AGENT = 'amoCRM-API-client/1.0';
+DomainRequest.DEFAULT_USER_AGENT = "amoCRM-API-client/1.0";
 exports.default = DomainRequest;
