@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -6,11 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ResponseHandler2 = require('./ResponseHandler');
+var _ResponseHandler2 = require("./ResponseHandler");
 
 var _ResponseHandler3 = _interopRequireDefault(_ResponseHandler2);
 
-var _xml2js = require('xml2js');
+var _reactNativeXml2js = require("react-native-xml2js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30,16 +30,16 @@ var DomainResponseHandler = function (_ResponseHandler) {
   }
 
   _createClass(DomainResponseHandler, [{
-    key: 'toJSON',
+    key: "toJSON",
     value: function toJSON(options) {
       var _this2 = this;
 
       if (!this._response) {
         return Promise.resolve({});
       }
-      if (options.dataType === 'xml') {
+      if (options.dataType === "xml") {
         return new Promise(function (resolve, reject) {
-          (0, _xml2js.parseString)(_this2._response, function (err, data) {
+          (0, _reactNativeXml2js.parseString)(_this2._response, function (err, data) {
             if (err) {
               return reject(err);
             }
@@ -53,7 +53,7 @@ var DomainResponseHandler = function (_ResponseHandler) {
       try {
         data = JSON.parse(this._response);
       } catch (e) {
-        throw Error('cannot parse JSON: ' + this._response);
+        throw Error("cannot parse JSON: " + this._response);
       }
 
       return Promise.resolve(data);
