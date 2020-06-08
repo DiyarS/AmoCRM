@@ -140,7 +140,7 @@ var DomainRequest = function (_EventResource) {
           headers = this.getDefaultHeaders(options.headers);
 
       if (!isGET && encodedData) {
-        console.log("DATA: ", endcodedData);
+        console.log("DATA: ", encodedData);
         headers["Content-Length"] = this.convertStringToByteArray(encodedData).length;
       }
       return headers;
